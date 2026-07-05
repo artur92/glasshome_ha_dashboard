@@ -28,7 +28,21 @@ glasshome_ha_dashboard/
 
 ## Vista previa
 
-Abre `preview/index.html` en un navegador para ver la demo localmente. La página incluye un reloj en tiempo real y controles visuales de muestra, pero no ejecuta acciones en Home Assistant.
+La página incluye un reloj en tiempo real y controles visuales de muestra, pero no ejecuta acciones en Home Assistant.
+
+Desde la raíz del repositorio, inicia un servidor web local:
+
+```bash
+python3 -m http.server 8000 --directory preview
+```
+
+Después abre en tu navegador:
+
+```text
+http://localhost:8000
+```
+
+Para detener el servidor, vuelve a la terminal y pulsa `Ctrl+C`.
 
 Para publicarla con GitHub Pages, configura Pages para desplegar desde GitHub Actions o mueve el contenido de `preview/` a la carpeta que uses como origen del sitio.
 

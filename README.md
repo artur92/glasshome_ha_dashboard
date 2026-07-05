@@ -2,6 +2,36 @@
 
 Dashboard kiosk para tablet (iPad/Android) con look Midnight Glass: fondo azul petróleo, glows cian, tiles con gradiente propio.
 
+## Estructura del proyecto
+
+```text
+glasshome_ha_dashboard/
+├── dashboards/
+│   └── tableta.yaml
+├── themes/
+│   └── glasshome.yaml
+├── preview/
+│   ├── index.html
+│   ├── styles.css
+│   └── script.js
+└── www/
+    └── community/
+        ├── card-mod/
+        ├── kiosk-mode/
+        └── mushroom/
+```
+
+- **`dashboards/`** contiene la definición del panel Lovelace. `tableta.yaml` organiza las vistas, tarjetas, entidades, controles, estilos y el modo kiosk del dashboard.
+- **`themes/`** contiene el tema visual de Home Assistant. `glasshome.yaml` define colores, fondos, tipografía, transparencias, bordes y otros estilos usados por el panel.
+- **`preview/`** contiene una demostración web estática y responsive con datos ficticios. No se conecta a Home Assistant y puede publicarse mediante GitHub Pages.
+- **`www/`** contiene archivos estáticos que Home Assistant publica bajo la ruta `/local/`. En `www/community/` se incluyen las dependencias frontend Mushroom, card-mod y kiosk-mode para una instalación manual. Si se instalan mediante HACS, normalmente no hace falta copiar estos archivos.
+
+## Vista previa
+
+Abre `preview/index.html` en un navegador para ver la demo localmente. La página incluye un reloj en tiempo real y controles visuales de muestra, pero no ejecuta acciones en Home Assistant.
+
+Para publicarla con GitHub Pages, configura Pages para desplegar desde GitHub Actions o mueve el contenido de `preview/` a la carpeta que uses como origen del sitio.
+
 ## Requisitos
 
 1. **Theme** → copia `themes/glasshome.yaml` a `<config>/themes/` y asegúrate de tener en `configuration.yaml`:

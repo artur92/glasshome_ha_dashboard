@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Vista previa estática del dashboard GlassHome Midnight">
+  <title>GlassHome Midnight — Vista previa</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="dashboard">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">GLASSHOME</p>
+        <h1>Mi hogar</h1>
+      </div>
+      <div class="status"><span></span> Sistema activo</div>
+    </header>
+
+    <section class="hero-grid" aria-label="Resumen">
+      <article class="card clock-card">
+        <time id="clock">10:24</time>
+        <span id="period">AM</span>
+      </article>
+
+      <article class="card weather-card">
+        <div class="weather-icon" aria-hidden="true">☀</div>
+        <div>
+          <strong>23°</strong>
+          <p>Despejado</p>
+        </div>
+        <dl>
+          <div><dt>Máx.</dt><dd>26°</dd></div>
+          <div><dt>Mín.</dt><dd>17°</dd></div>
+        </dl>
+      </article>
+
+      <article class="card date-card">
+        <span class="calendar-icon" aria-hidden="true">▦</span>
+        <div>
+          <strong id="weekday">Domingo</strong>
+          <p id="date">5 de julio de 2026</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="chips" aria-label="Estado rápido">
+      <span>🛏️ 22° · 48%</span>
+      <span>🌿 21° · 52%</span>
+      <span>🔋 78%</span>
+      <span>🚪 Puerta cerrada</span>
+      <span id="lights-summary">💡 2 encendidas</span>
+    </section>
+
+    <section class="main-grid" aria-label="Controles del hogar">
+      <article class="card light-feature">
+        <div class="card-heading">
+          <span class="round-icon amber">●</span>
+          <div><h2>Luz principal</h2><p id="main-light-state">Encendida · 72%</p></div>
+          <button class="switch active" type="button" aria-label="Alternar luz principal" aria-pressed="true"></button>
+        </div>
+        <label class="brightness">
+          <span>Brillo</span>
+          <input type="range" min="0" max="100" value="72">
+        </label>
+      </article>
+
+      <article class="card lights-card">
+        <h2>Luces</h2>
+        <div class="mini-grid">
+          <button class="device active" type="button" aria-pressed="true"><i>◉</i><span>Luz 1</span></button>
+          <button class="device" type="button" aria-pressed="false"><i>◉</i><span>Luz 2</span></button>
+          <button class="device active" type="button" aria-pressed="true"><i>◉</i><span>Luz 3</span></button>
+        </div>
+      </article>
+
+      <article class="card energy-card">
+        <div class="card-title-row"><h2>Energía</h2><span>En tiempo real</span></div>
+        <div class="energy-content">
+          <div class="production"><span>☀</span><strong>2.4</strong><small>kW ahora</small></div>
+          <div class="gauge" style="--value: 78">
+            <div><strong>78%</strong><small>Batería</small></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card room-card">
+        <div class="card-title-row"><h2>Ambiente</h2><span>7 zonas</span></div>
+        <div class="sensors">
+          <div><span>Zona 1</span><strong>22°</strong><small>48%</small></div>
+          <div><span>Zona 2</span><strong>21°</strong><small>52%</small></div>
+          <div><span>Zona 3</span><strong>23°</strong><small>45%</small></div>
+          <div><span>Zona 4</span><strong>22°</strong><small>49%</small></div>
+          <div><span>Zona 5</span><strong>21°</strong><small>51%</small></div>
+          <div><span>Zona 6</span><strong>24°</strong><small>43%</small></div>
+        </div>
+      </article>
+
+      <article class="card battery-card">
+        <div class="battery-icon">♥</div>
+        <div><h2>Pilas de sensores</h2><p>Todos los dispositivos están bien</p></div>
+        <strong>68% mín.</strong>
+      </article>
+
+      <article class="card devices-card">
+        <h2>Dispositivos</h2>
+        <div>
+          <span>▣<small>Tableta</small><strong>84%</strong></span>
+          <span>▯<small>Móvil</small><strong>67%</strong></span>
+          <span>⌁<small>Red</small><strong>Online</strong></span>
+        </div>
+      </article>
+    </section>
+
+    <footer>Demo con datos ficticios · Sin conexión a Home Assistant</footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

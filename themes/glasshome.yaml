@@ -1,0 +1,86 @@
+# Theme "GlassHome — Midnight Glass" (glasshome.app, preset oscuro).
+# Fondo azul petróleo casi negro con resplandores cian muy suaves,
+# tarjetas glass oscuras y acento cian. Solo variables CSS.
+glasshome:
+  # Fondo del dashboard
+  lovelace-background: >-
+    radial-gradient(ellipse 70% 50% at 15% 5%, rgba(45,180,210,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 45% at 90% 90%, rgba(30,120,160,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 35% at 70% 20%, rgba(20,80,110,0.10) 0%, transparent 60%),
+    linear-gradient(165deg, #070b0f 0%, #0b1218 45%, #0a1014 100%)
+  primary-background-color: "#070b0f"
+  secondary-background-color: "#0d141b"
+
+  # Tarjetas "glass" oscuras
+  ha-card-background: "rgba(255,255,255,0.045)"
+  card-background-color: "rgba(255,255,255,0.045)"
+  ha-card-border-radius: "22px"
+  ha-card-border-width: "1px"
+  ha-card-border-color: "rgba(255,255,255,0.07)"
+  ha-card-box-shadow: "0 12px 32px rgba(0,0,0,0.45)"
+
+  # Texto
+  primary-text-color: "#eef4f6"
+  secondary-text-color: "#8da0ab"
+  text-primary-color: "#ffffff"
+  disabled-text-color: "#4a5a64"
+  primary-font-family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+
+  # Acentos e iconos — cian GlassHome
+  primary-color: "#3ecfdf"
+  accent-color: "#3ecfdf"
+  light-primary-color: "#7fe3ee"
+  dark-primary-color: "#22a7b8"
+  state-icon-color: "#9fb3bd"
+  paper-item-icon-color: "#9fb3bd"
+  paper-item-icon-active-color: "#3ecfdf"
+  state-on-color: "#f4c542"
+  state-light-on-color: "#f4c542"
+
+  # Sliders / switches
+  paper-slider-knob-color: "#3ecfdf"
+  paper-slider-active-color: "#3ecfdf"
+  switch-checked-color: "#3ecfdf"
+  switch-checked-button-color: "#3ecfdf"
+  switch-checked-track-color: "rgba(62,207,223,0.4)"
+  slider-color: "#3ecfdf"
+  slider-track-color: "rgba(255,255,255,0.10)"
+
+  # Separadores e inputs
+  divider-color: "rgba(255,255,255,0.06)"
+  input-fill-color: "rgba(255,255,255,0.05)"
+  input-ink-color: "#eef4f6"
+  input-label-ink-color: "#8da0ab"
+
+  # Header / sidebar (por si se muestran fuera del modo kiosk)
+  app-header-background-color: "rgba(7,11,15,0.85)"
+  app-header-text-color: "#eef4f6"
+  sidebar-background-color: "#070b0f"
+  sidebar-text-color: "#8da0ab"
+  sidebar-selected-icon-color: "#3ecfdf"
+  sidebar-selected-text-color: "#eef4f6"
+
+  # Mushroom — esquinas e icono acordes
+  mush-card-border-radius: "22px"
+  mush-icon-border-radius: "14px"
+  mush-rgb-state: "62, 207, 223"
+
+  # Gráficas / gauge
+  graph-color-1: "#3ecfdf"
+  graph-color-2: "#f4c542"
+  paper-green-400: "#37d99e"
+  paper-yellow-400: "#f4c542"
+  paper-red-400: "#f25c54"
+
+  # Popups / diálogos
+  ha-dialog-border-radius: "26px"
+  mdc-dialog-container-color: "#0d141b"
+
+  # card-mod global: blur glass en todas las tarjetas
+  card-mod-theme: glasshome
+  card-mod-card-yaml: |
+    .: |
+      ha-card {
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }

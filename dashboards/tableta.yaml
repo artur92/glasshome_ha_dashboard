@@ -1,0 +1,409 @@
+title: Tableta
+
+# kiosk-mode: oculta header y sidebar SIEMPRE en este dashboard.
+# Debe estar en la raíz del YAML, no dentro de una vista.
+kiosk_mode:
+  kiosk: true
+
+views:
+- title: Casa
+  path: tableta-casa
+  icon: mdi:home-variant
+  theme: glasshome
+  type: sections
+  max_columns: 4
+  sections:
+
+  # Mosaico único estilo GlassHome: grid interno de 12 columnas.
+  - title: ''
+    column_span: 4
+    cards:
+
+    # ── Fila 1: Reloj · Clima · Fecha ─────────────────────────
+    - type: clock
+      clock_size: large
+      show_seconds: false
+      grid_options: { columns: 12, rows: 2 }
+      card_mod:
+        style: |
+          ha-card {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+              radial-gradient(circle at 30% 25%, rgba(62,227,240,0.38) 0%, transparent 60%),
+              linear-gradient(150deg, rgba(34,167,184,0.45) 0%, rgba(9,40,52,0.55) 100%);
+            border: none;
+            color: #d8fbff;
+            text-shadow: 0 0 16px rgba(98,233,246,0.85), 0 0 40px rgba(62,207,223,0.45);
+          }
+          .time-part {
+            font-size: 64px !important;
+            font-weight: 650 !important;
+            line-height: 1 !important;
+          }
+          .time-part.am-pm {
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            opacity: 0.8;
+          }
+    - type: weather-forecast
+      entity: weather.example_home
+      show_current: true
+      show_forecast: false
+      grid_options: { columns: 12, rows: 2 }
+      tap_action:
+        action: more-info
+      card_mod:
+        style: |
+          ha-card {
+            height: 100%;
+            background: linear-gradient(150deg, rgba(110,170,225,0.26) 0%, rgba(20,45,75,0.30) 100%);
+            border: none;
+          }
+    - type: custom:mushroom-template-card
+      primary: >-
+        {{ ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'][now().weekday()] }}
+      secondary: >-
+        {{ now().day }} de
+        {{ ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][now().month-1] }}
+        de {{ now().year }}
+      icon: mdi:calendar-blank
+      icon_color: cyan
+      grid_options: { columns: 12, rows: 2 }
+      tap_action:
+        action: none
+      card_mod:
+        style: |
+          ha-card {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.07);
+          }
+
+    # ── Fila 2: chips resumen ─────────────────────────────────
+    - type: custom:mushroom-chips-card
+      alignment: center
+      grid_options: { columns: full }
+      card_mod:
+        style: |
+          ha-card {
+            --chip-background: rgba(255,255,255,0.07);
+            --chip-border-radius: 999px;
+            background: none;
+            border: none;
+            box-shadow: none;
+          }
+      chips:
+      - type: template
+        entity: sensor.example_temperature_01
+        icon: mdi:bed-king
+        icon_color: orange
+        content: '{{ states("sensor.example_temperature_01") }}° · {{ states("sensor.example_humidity_01") }}%'
+        tap_action: { action: more-info }
+      - type: template
+        entity: sensor.example_temperature_02
+        icon: mdi:flower-outline
+        icon_color: deep-orange
+        content: '{{ states("sensor.example_temperature_02") }}° · {{ states("sensor.example_humidity_02") }}%'
+        tap_action: { action: more-info }
+      - type: template
+        entity: sensor.example_energy_battery
+        icon: mdi:battery-charging
+        icon_color: >-
+          {% set s = states('sensor.example_energy_battery') | float(0) %}
+          {{ 'red' if s < 20 else ('amber' if s < 50 else 'green') }}
+        content: >-
+          {% set s = states('sensor.example_energy_battery') %}
+          {{ s ~ '%' if s not in ['unavailable','unknown'] else '—' }}
+        tap_action: { action: more-info }
+      - type: template
+        entity: binary_sensor.example_door
+        icon: >-
+          {{ 'mdi:door-open' if is_state('binary_sensor.example_door', 'on') else 'mdi:door-closed' }}
+        icon_color: >-
+          {{ 'red' if is_state('binary_sensor.example_door', 'on') else 'green' }}
+        content: >-
+          Puerta {{ 'abierta' if is_state('binary_sensor.example_door', 'on') else 'cerrada' }}
+        tap_action: { action: more-info }
+      - type: template
+        icon: mdi:lightbulb-group
+        icon_color: >-
+          {% set ls = [states('light.example_light_01'), states('light.example_light_02'),
+            states('light.example_light_03'), states('light.example_light_04'),
+            states('light.example_light_05')] %}
+          {{ 'amber' if 'on' in ls else 'grey' }}
+        content: >-
+          {% set ls = [states('light.example_light_01'), states('light.example_light_02'),
+            states('light.example_light_03'), states('light.example_light_04'),
+            states('light.example_light_05')] %}
+          {{ ls | select('eq','on') | list | count }} encendidas
+        tap_action: { action: none }
+
+    # ── Fila 3: Luces · Energía ───────────────────────────────
+    - type: custom:mushroom-light-card
+      entity: light.example_light_02
+      name: Luz principal
+      show_brightness_control: true
+      show_color_temp_control: true
+      use_light_color: true
+      collapsible_controls: true
+      layout: horizontal
+      grid_options: { columns: 12 }
+      tap_action:
+        action: toggle
+      card_mod:
+        style: |
+          ha-card {
+            height: 100%;
+            background:
+              radial-gradient(circle at 22% 25%, rgba(255,190,90,0.30) 0%, transparent 55%),
+              linear-gradient(150deg, rgba(214,150,46,0.38) 0%, rgba(70,40,8,0.30) 100%);
+            border: none;
+          }
+    - type: horizontal-stack
+      grid_options: { columns: 12 }
+      cards:
+      - type: custom:mushroom-light-card
+        entity: light.example_light_03
+        name: Luz 2
+        icon: mdi:wall-sconce-flat
+        layout: vertical
+        tap_action:
+          action: toggle
+        card_mod: &luz_tile
+          style: |
+            ha-card {
+              height: 100%;
+              background: linear-gradient(150deg, rgba(170,140,105,0.22) 0%, rgba(45,33,20,0.25) 100%);
+              border: none;
+            }
+      - type: custom:mushroom-light-card
+        entity: light.example_light_01
+        name: Luz 1
+        icon: mdi:coach-lamp
+        layout: vertical
+        tap_action:
+          action: toggle
+        card_mod: *luz_tile
+      - type: custom:mushroom-light-card
+        entity: light.example_light_05
+        name: Luz 5
+        icon: mdi:track-light
+        layout: vertical
+        tap_action:
+          action: toggle
+        card_mod: *luz_tile
+    - type: horizontal-stack
+      grid_options: { columns: 12 }
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.example_energy_power
+        name: Producción
+        icon: mdi:solar-panel
+        icon_color: amber
+        primary_info: state
+        secondary_info: name
+        layout: vertical
+        card_mod: &solar_tile
+          style: |
+            ha-card {
+              height: 100%;
+              background:
+                radial-gradient(circle at 25% 20%, rgba(255,210,90,0.25) 0%, transparent 55%),
+                linear-gradient(150deg, rgba(244,197,66,0.30) 0%, rgba(80,55,8,0.25) 100%);
+              border: none;
+            }
+      - type: gauge
+        entity: sensor.example_energy_battery
+        name: Batería
+        min: 0
+        max: 100
+        needle: true
+        severity:
+          green: 50
+          yellow: 20
+          red: 0
+        card_mod: *solar_tile
+
+    # ── Fila 4: Luces · Sensores ambientales ──────────────────
+    - type: vertical-stack
+      grid_options: { columns: 18 }
+      cards:
+      - type: custom:mushroom-light-card
+        entity: light.example_light_04
+        name: Luz 4
+        show_brightness_control: true
+        show_color_temp_control: true
+        use_light_color: true
+        collapsible_controls: true
+        tap_action:
+          action: toggle
+        card_mod: &indigo_tile
+          style: |
+            ha-card {
+              height: 100%;
+              background: linear-gradient(150deg, rgba(95,125,255,0.26) 0%, rgba(22,30,75,0.28) 100%);
+              border: none;
+            }
+      - type: horizontal-stack
+        cards:
+        - type: custom:mushroom-light-card
+          entity: light.example_light_06
+          name: Luz 6
+          icon: mdi:lamp
+          layout: vertical
+          tap_action:
+            action: toggle
+          card_mod: *indigo_tile
+        - type: custom:mushroom-light-card
+          entity: light.example_light_07
+          name: Luz 7
+          icon: mdi:lamp
+          layout: vertical
+          tap_action:
+            action: toggle
+          card_mod: *indigo_tile
+    - type: vertical-stack
+      grid_options: { columns: 18 }
+      cards:
+      - type: horizontal-stack
+        cards:
+        - type: custom:mushroom-template-card
+          entity: sensor.example_temperature_03
+          primary: '{{ states("sensor.example_temperature_03") }}°'
+          secondary: 'Zona 3 · {{ states("sensor.example_humidity_03") }}%'
+          icon: mdi:thermometer
+          icon_color: cyan
+          layout: vertical
+          tap_action: { action: more-info }
+          card_mod: &clima_tile
+            style: |
+              ha-card {
+                height: 100%;
+                background: linear-gradient(150deg, rgba(45,190,205,0.20) 0%, rgba(10,55,65,0.22) 100%);
+                border: none;
+              }
+        - type: custom:mushroom-template-card
+          entity: sensor.example_temperature_04
+          primary: '{{ states("sensor.example_temperature_04") }}°'
+          secondary: 'Zona 4 · {{ states("sensor.example_humidity_04") }}%'
+          icon: mdi:thermometer
+          icon_color: cyan
+          layout: vertical
+          tap_action: { action: more-info }
+          card_mod: *clima_tile
+        - type: custom:mushroom-template-card
+          entity: sensor.example_temperature_05
+          primary: '{{ states("sensor.example_temperature_05") }}°'
+          secondary: 'Zona 5 · {{ states("sensor.example_humidity_05") }}%'
+          icon: mdi:thermometer
+          icon_color: cyan
+          layout: vertical
+          tap_action: { action: more-info }
+          card_mod: *clima_tile
+      - type: horizontal-stack
+        cards:
+        - type: custom:mushroom-template-card
+          entity: sensor.example_temperature_06
+          primary: '{{ states("sensor.example_temperature_06") }}°'
+          secondary: 'Zona 6 · {{ states("sensor.example_humidity_06") }}%'
+          icon: mdi:shower
+          icon_color: teal
+          layout: vertical
+          tap_action: { action: more-info }
+          card_mod: *clima_tile
+        - type: custom:mushroom-template-card
+          entity: sensor.example_temperature_07
+          primary: '{{ states("sensor.example_temperature_07") }}°'
+          secondary: 'Zona 7 · {{ states("sensor.example_humidity_07") }}%'
+          icon: mdi:toilet
+          icon_color: teal
+          layout: vertical
+          tap_action: { action: more-info }
+          card_mod: *clima_tile
+        - type: custom:mushroom-template-card
+          entity: sensor.example_temperature_02
+          primary: '{{ states("sensor.example_temperature_02") }}°'
+          secondary: 'Zona 2 · {{ states("sensor.example_humidity_02") }}%'
+          icon: mdi:flower-outline
+          icon_color: deep-orange
+          layout: vertical
+          tap_action: { action: more-info }
+          card_mod: *clima_tile
+
+    # ── Fila 5: Pilas · Dispositivos ──────────────────────────
+    - type: custom:mushroom-template-card
+      primary: Pilas sensores
+      secondary: >-
+        {% set b = {'Sensor 1': 'sensor.example_battery_01',
+          'Sensor 2': 'sensor.example_battery_02',
+          'Sensor 3': 'sensor.example_battery_03',
+          'Sensor 4': 'sensor.example_battery_04',
+          'Sensor 5': 'sensor.example_battery_05',
+          'Sensor 6': 'sensor.example_battery_06',
+          'Sensor 7': 'sensor.example_battery_07',
+          'Sensor 8': 'sensor.example_battery_08',
+          'Sensor 9': 'sensor.example_battery_09'} %}
+        {% set ns = namespace(low=[], min=999) %}
+        {% for n, e in b.items() %}
+          {% set v = states(e) | float(-1) %}
+          {% if 0 <= v < ns.min %}{% set ns.min = v %}{% endif %}
+          {% if 0 <= v < 40 %}{% set ns.low = ns.low + [n ~ ' ' ~ v|int ~ '%'] %}{% endif %}
+        {% endfor %}
+        {{ ns.low | join(' · ') if ns.low else 'Todas bien (mín. ' ~ ns.min|int ~ '%)' }}
+      icon: mdi:battery-heart-variant
+      icon_color: >-
+        {% set b = ['sensor.example_battery_01','sensor.example_battery_02',
+          'sensor.example_battery_03','sensor.example_battery_04',
+          'sensor.example_battery_05','sensor.example_battery_06',
+          'sensor.example_battery_07','sensor.example_battery_08',
+          'sensor.example_battery_09'] %}
+        {% set vals = b | map('states') | select('match','^[0-9.]+$') | map('float') | list %}
+        {% set m = vals | min if vals else -1 %}
+        {{ 'red' if m < 20 else ('amber' if m < 40 else 'green') }}
+      multiline_secondary: true
+      grid_options: { columns: 18 }
+      tap_action:
+        action: none
+      card_mod:
+        style: |
+          ha-card {
+            height: 100%;
+            background: linear-gradient(150deg, rgba(55,217,158,0.20) 0%, rgba(8,60,42,0.24) 100%);
+            border: none;
+          }
+    - type: horizontal-stack
+      grid_options: { columns: 18 }
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.example_tablet_battery
+        name: iPad
+        icon: mdi:tablet
+        icon_color: >-
+          {% set b = states('sensor.example_tablet_battery') | int(0) %}
+          {{ 'red' if b < 20 else ('yellow' if b < 50 else 'green') }}
+        primary_info: state
+        secondary_info: name
+        layout: vertical
+      - type: custom:mushroom-entity-card
+        entity: sensor.example_phone_battery
+        name: Móvil
+        icon: mdi:cellphone
+        icon_color: >-
+          {% set b = states('sensor.example_phone_battery') | int(0) %}
+          {{ 'red' if b < 20 else ('yellow' if b < 50 else 'green') }}
+        primary_info: state
+        secondary_info: name
+        layout: vertical
+      - type: custom:mushroom-entity-card
+        entity: sensor.example_phone_network
+        name: WiFi
+        icon: mdi:wifi
+        icon_color: blue
+        primary_info: state
+        secondary_info: name
+        layout: vertical
